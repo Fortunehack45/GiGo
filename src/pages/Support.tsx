@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send, User, Headset, MessageSquare } from 'lucide-react';
-import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, limit } from 'firebase/firestore';
-import { db } from '../firebase';
+import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, limit, where } from 'firebase/firestore';
+import { db, handleFirestoreError, OperationType } from '../firebase';
 
 export default function Support({ user }: { user: any }) {
   const [messages, setMessages] = useState<any[]>([]);
@@ -14,16 +14,18 @@ export default function Support({ user }: { user: any }) {
     
     const q = query(
       collection(db, 'support_chats'),
+      where('userId', '==', user.uid),
       orderBy('createdAt', 'asc'),
       limit(50)
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const msgs = snapshot.docs
-        .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter((msg: any) => msg.userId === user.uid || msg.isAdmin); // Simple filter for demo
+        .map(doc => ({ id: doc.id, ...doc.data() }));
       setMessages(msgs);
       setTimeout(() => scrollRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, 'support_chats');
     });
 
     return () => unsubscribe();

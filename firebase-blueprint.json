@@ -29,6 +29,7 @@
         "description": { "type": "string" },
         "reward": { "type": "number" },
         "type": { "type": "string", "enum": ["social", "survey", "video", "other"] },
+        "link": { "type": "string", "format": "uri" },
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["title", "reward", "type"]
@@ -44,6 +45,19 @@
         "completedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "taskId", "status"]
+    },
+    "SupportChat": {
+      "title": "SupportChat",
+      "description": "Messages between users and support",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "text": { "type": "string" },
+        "isAdmin": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "text", "isAdmin"]
     },
     "Withdrawal": {
       "title": "Withdrawal",
@@ -76,6 +90,10 @@
     "/withdrawals/{withdrawalId}": {
       "schema": "Withdrawal",
       "description": "User withdrawal requests"
+    },
+    "/support_chats/{chatId}": {
+      "schema": "SupportChat",
+      "description": "Support chat messages"
     }
   }
 }

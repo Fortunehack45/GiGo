@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { auth, db } from './firebase';
+import { auth, db, handleFirestoreError, OperationType } from './firebase';
 import { Navbar } from './components/Navbar';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -32,6 +32,9 @@ function AppContent() {
           if (docSnap.exists()) {
             setUserData(docSnap.data());
           }
+          setLoading(false);
+        }, (error) => {
+          handleFirestoreError(error, OperationType.GET, `users/${firebaseUser.uid}`);
           setLoading(false);
         });
         return () => unsubDoc();

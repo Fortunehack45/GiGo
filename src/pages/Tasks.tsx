@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { collection, query, onSnapshot, addDoc, serverTimestamp, doc, updateDoc, increment } from 'firebase/firestore';
+import { collection, query, onSnapshot, addDoc, serverTimestamp, doc, updateDoc, increment, where } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import { formatCurrency } from '../lib/utils';
 import { CheckCircle2, Circle, ArrowRight, Star } from 'lucide-react';
@@ -11,25 +11,35 @@ export default function Tasks({ user }: { user: any }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user?.uid) return;
+
     const q = query(collection(db, 'tasks'));
     const unsubTasks = onSnapshot(q, (snapshot) => {
       setTasks(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       setLoading(false);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, 'tasks');
+      setLoading(false);
     });
 
-    const userTasksQ = query(collection(db, 'userTasks'));
+    const userTasksQ = query(
+      collection(db, 'userTasks'),
+      where('userId', '==', user.uid)
+    );
     const unsubUserTasks = onSnapshot(userTasksQ, (snapshot) => {
       const completed = snapshot.docs
-        .filter(doc => doc.data().userId === user.uid && doc.data().status === 'completed')
+        .filter(doc => doc.data().status === 'completed')
         .map(doc => doc.data().taskId);
       setCompletedTasks(completed);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, 'userTasks');
     });
 
     return () => {
       unsubTasks();
       unsubUserTasks();
     };
-  }, [user.uid]);
+  }, [user?.uid]);
 
   const completeTask = async (task: any) => {
     if (completedTasks.includes(task.id)) return;
@@ -106,13 +116,30 @@ export default function Tasks({ user }: { user: any }) {
               </div>
 
               {!isCompleted && (
-                <button
-                  onClick={() => completeTask(task)}
-                  className="mt-6 w-full bg-zinc-800 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 group-hover:bg-white group-hover:text-black transition-all"
-                >
-                  Complete Task
-                  <ArrowRight size={18} />
-                </button>
+                <div className="mt-6 flex gap-3">
+                  {task.link && (
+                    <a
+                      href={task.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 bg-zinc-800 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-zinc-700 transition-all border border-zinc-700"
+                    >
+                      Go to Task
+                      <ArrowRight size={18} />
+                    </a>
+                  )}
+                  <button
+                    onClick={() => completeTask(task)}
+                    className={`flex-1 font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all ${
+                      task.link 
+                        ? 'bg-white text-black hover:bg-zinc-200' 
+                        : 'bg-zinc-800 text-white hover:bg-white hover:text-black'
+                    }`}
+                  >
+                    {task.link ? 'Claim Reward' : 'Complete Task'}
+                    <CheckCircle2 size={18} />
+                  </button>
+                </div>
               )}
             </motion.div>
           );

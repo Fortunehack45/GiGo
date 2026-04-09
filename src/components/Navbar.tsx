@@ -43,11 +43,11 @@ export function Navbar({ isAdmin }: { isAdmin?: boolean }) {
   const location = useLocation();
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[95%] sm:max-w-md">
+    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-[90%] sm:max-w-md">
       <motion.nav
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="flex items-center justify-around px-2 py-2 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-[32px] shadow-2xl shadow-black/50"
+        className="flex items-center justify-around px-4 py-3 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[32px] shadow-2xl shadow-black/50"
       >
         <NavItem to="/" icon={Home} label="Home" isActive={location.pathname === '/'} />
         <NavItem to="/tasks" icon={ClipboardList} label="Tasks" isActive={location.pathname === '/tasks'} />
