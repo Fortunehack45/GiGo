@@ -1,0 +1,81 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and earnings data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "name": { "type": "string" },
+        "username": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "totalEarnings": { "type": "number" },
+        "pendingEarnings": { "type": "number" },
+        "referralEarnings": { "type": "number" },
+        "referralCode": { "type": "string" },
+        "referredBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "name", "username", "role", "totalEarnings"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Earnings tasks for users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "reward": { "type": "number" },
+        "type": { "type": "string", "enum": ["social", "survey", "video", "other"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "reward", "type"]
+    },
+    "UserTask": {
+      "title": "UserTask",
+      "description": "Record of a user completing a task",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "taskId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "completed", "rejected"] },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "taskId", "status"]
+    },
+    "Withdrawal": {
+      "title": "Withdrawal",
+      "description": "User withdrawal request",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["30%", "50%", "100%"] },
+        "code": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "type", "code", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Available tasks"
+    },
+    "/userTasks/{userTaskId}": {
+      "schema": "UserTask",
+      "description": "User task completion records"
+    },
+    "/withdrawals/{withdrawalId}": {
+      "schema": "Withdrawal",
+      "description": "User withdrawal requests"
+    }
+  }
+}
