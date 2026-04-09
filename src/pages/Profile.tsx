@@ -72,15 +72,15 @@ export default function Profile({ user }: { user: any }) {
               <Smartphone size={24} />
             </div>
             <div>
-              <h3 className="text-white font-bold">Install GiGo App</h3>
-              <p className="text-zinc-500 text-xs">Access GiGo directly from your home screen</p>
+              <h3 className="text-white font-bold">GiGo App</h3>
+              <p className="text-zinc-500 text-xs">Access GiGo from your home screen</p>
             </div>
           </div>
           <button 
             onClick={handleInstall}
-            className="px-4 py-2 bg-white text-black text-xs font-black rounded-xl shadow-lg hover:scale-105 active:scale-95 transition-all"
+            className="px-4 py-2 bg-white text-black text-[10px] font-black uppercase tracking-wider rounded-xl shadow-lg hover:scale-105 active:scale-95 transition-all"
           >
-            Install
+            Add to Home Screen
           </button>
         </div>
       </div>
@@ -144,30 +144,30 @@ export default function Profile({ user }: { user: any }) {
 
               <div className="text-center space-y-4">
                 <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto">
-                  <Download className="text-white" size={32} />
+                  <Smartphone className="text-white" size={32} />
                 </div>
-                <h3 className="text-2xl font-black text-white">How to Install</h3>
-                <p className="text-zinc-500 text-sm">Follow these steps to add GiGo to your home screen:</p>
+                <h3 className="text-2xl font-black text-white">Add to Home Screen</h3>
+                <p className="text-zinc-500 text-sm">Access GiGo instantly like a native app.</p>
               </div>
 
               <div className="space-y-4">
-                <div className="bg-black/40 border border-white/5 rounded-2xl p-4 space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-white/10 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">1</div>
+                <div className="bg-black/40 border border-white/5 rounded-2xl p-5 space-y-5">
+                  <div className="flex items-start gap-4">
+                    <div className="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center text-xs font-black shrink-0">1</div>
                     <p className="text-zinc-300 text-xs leading-relaxed">
-                      Tap the <span className="inline-flex items-center px-1.5 py-0.5 bg-white/10 rounded text-white"><Share size={12} className="mr-1" /> Share</span> button in your browser's menu.
+                      Open your browser's <span className="text-white font-bold">Options</span> or <span className="text-white font-bold">Menu</span>.
                     </p>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-white/10 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">2</div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center text-xs font-black shrink-0">2</div>
                     <p className="text-zinc-300 text-xs leading-relaxed">
-                      Scroll down and select <span className="text-white font-bold">"Add to Home Screen"</span>.
+                      Find and tap the <span className="text-white font-bold">"Add to Home Screen"</span> button.
                     </p>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-white/10 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">3</div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center text-xs font-black shrink-0">3</div>
                     <p className="text-zinc-300 text-xs leading-relaxed">
-                      Tap <span className="text-white font-bold">"Add"</span> in the top right corner.
+                      Confirm by tapping <span className="text-white font-bold">"Add"</span> or <span className="text-white font-bold">"Install"</span>.
                     </p>
                   </div>
                 </div>
